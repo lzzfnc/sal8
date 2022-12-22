@@ -11,6 +11,7 @@ var strPath;
 var buffer = []; // Contains the last positions of the mouse cursor
 
 const startDrawing = (e) => {
+	e.preventDefault();
 	bufferSize = 8;
 	path = document.createElementNS("http://www.w3.org/2000/svg", "path");
 	path.setAttribute("fill", "none");
@@ -25,6 +26,7 @@ const startDrawing = (e) => {
 };
 
 const draw = (e) => {
+	e.preventDefault();
 	if (path) {
 		appendToBuffer(getMousePosition(e));
 		updateSvgPath();
