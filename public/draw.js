@@ -12,7 +12,7 @@ var buffer = []; // Contains the last positions of the mouse cursor
 
 const startDrawing = (e) => {
 	e.preventDefault();
-	bufferSize = 8;
+	bufferSize = 2;
 	path = document.createElementNS("http://www.w3.org/2000/svg", "path");
 	path.setAttribute("fill", "none");
 	path.setAttribute("stroke", "currentColor");
@@ -101,7 +101,7 @@ svgElement.addEventListener("touchstart", (e) => startDrawing(e));
 svgElement.addEventListener("mousemove", (e) => draw(e));
 svgElement.addEventListener("touchmove", (e) => draw(e));
 
-svgElement.addEventListener("mouseup", () => stopDrawing());
-svgElement.addEventListener("mouseleave", () => stopDrawing());
-svgElement.addEventListener("touchend", () => stopDrawing());
-svgElement.addEventListener("touchcancel", () => stopDrawing());
+svgElement.addEventListener("mouseup", () => stopDrawing(), { passive: false });
+svgElement.addEventListener("mouseleave", () => stopDrawing(), { passive: false });
+svgElement.addEventListener("touchend", () => stopDrawing(), { passive: false });
+svgElement.addEventListener("touchcancel", () => stopDrawing(), { passive: false });
