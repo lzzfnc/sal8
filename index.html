@@ -5,7 +5,9 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Draw draw draw</title>
+		<script src="wss.js"></script>
 		<script src="draw.js" defer></script>
+		<link rel="stylesheet" href="style.css" />
 	</head>
 	<body>
 		<h1>Disegna <span id="theme"></span></h1>
@@ -29,7 +31,7 @@
 		<script>
 			const theme = document.querySelector("#theme");
 
-			const socket = new WebSocket(location.origin.replace(/^http/, "ws"));
+			const socket = new ReconnectingWebSocket(location.origin.replace(/^http/, "ws"));
 
 			socket.onmessage = (event) => {
 				let message;
