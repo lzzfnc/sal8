@@ -1,0 +1,15 @@
+{
+  "name": "sal8",
+  "version": "1.0.0",
+  "description": "collective drawings",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "ws": "^8.11.0"
+  }
+}

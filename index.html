@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Draw draw draw</title>
+		<script src="draw.js" defer></script>
+	</head>
+	<body>
+		<h1>Disegna <span id="theme"></span></h1>
+		<div id="svg-container">
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				xmlns:xlink="http://www.w3.org/1999/xlink"
+				version="1.1"
+				id="svgElement"
+				x="0px"
+				y="0px"
+				width="500px"
+				height="500px"
+				viewBox="0 0 500 500"
+				enable-background="new 0 0 500 500"
+				xml:space="preserve"
+			></svg>
+		</div>
+
+		<button id="submit">Send</button>
+		<script>
+			const theme = document.querySelector("#theme");
+
+			const socket = new WebSocket(location.origin.replace(/^http/, "ws"));
+
+			socket.onmessage = (event) => {
+				let message;
+				try {
+					message = JSON.parse(event.data);
+				} catch (e) {}
+
+				if (message?.type == "theme") {
+					theme.innerHTML = message.theme;
+				}
+			};
+
+			document.querySelector("#submit").addEventListener("click", (event) => {
+				const paths = Array.from(document.querySelectorAll("#svgElement path")).reduce(
+					(accumulator, current) => {
+						return (accumulator += current.getAttribute("d"));
+					},
+					""
+				);
+				socket.send(paths);
+				return false;
+			});
+		</script>
+	</body>
+</html>
