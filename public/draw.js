@@ -12,6 +12,7 @@ var buffer = []; // Contains the last positions of the mouse cursor
 
 const startDrawing = (e) => {
 	e.preventDefault();
+	// console.log("start");
 	bufferSize = 2;
 	path = document.createElementNS("http://www.w3.org/2000/svg", "path");
 	path.setAttribute("fill", "none");
@@ -28,6 +29,7 @@ const startDrawing = (e) => {
 const draw = (e) => {
 	e.preventDefault();
 	if (path) {
+		// console.log("draw");
 		appendToBuffer(getMousePosition(e));
 		updateSvgPath();
 	}
@@ -35,14 +37,15 @@ const draw = (e) => {
 
 const stopDrawing = () => {
 	if (path) {
+		// console.log("stop");
 		path = null;
 	}
 };
 
 var getMousePosition = function (e) {
 	return {
-		x: e.pageX - rect.left,
-		y: e.pageY - rect.top,
+		x: (e.pageX || e?.changedTouches[0]?.pageX) - rect.left,
+		y: (e.pageY || e?.changedTouches[0]?.pageY) - rect.top,
 	};
 };
 
@@ -96,12 +99,11 @@ var updateSvgPath = function () {
 };
 
 svgElement.addEventListener("mousedown", (e) => startDrawing(e));
-svgElement.addEventListener("touchstart", (e) => startDrawing(e));
+svgElement.addEventListener("touchstart", (e) => startDrawing(e), { passive: false });
 
 svgElement.addEventListener("mousemove", (e) => draw(e));
-svgElement.addEventListener("touchmove", (e) => draw(e));
+svgElement.addEventListener("touchmove", (e) => draw(e), { passive: false });
 
-svgElement.addEventListener("mouseup", () => stopDrawing(), { passive: false });
-svgElement.addEventListener("mouseleave", () => stopDrawing(), { passive: false });
-svgElement.addEventListener("touchend", () => stopDrawing(), { passive: false });
-svgElement.addEventListener("touchcancel", () => stopDrawing(), { passive: false });
+svgElement.addEventListener("mouseup", () => stopDrawing());
+svgElement.addEventListener("mouseleave", () => stopDrawing());
+svgElement.addEventListener("touchend", () => stopDrawing());
