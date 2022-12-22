@@ -49,8 +49,11 @@
 					},
 					""
 				);
-				socket.send(paths);
-				return false;
+				socket.send(JSON.stringify({ type: "drawings", paths: paths }));
+
+				for (const path of document.querySelectorAll("#svgElement path")) {
+					path.remove();
+				}
 			});
 		</script>
 	</body>

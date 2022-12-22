@@ -1,7 +1,7 @@
 // Great resource from https://stackoverflow.com/a/40700068
 // Thank you ConnorFan
 
-var strokeWidth = 4;
+var strokeWidth = 8;
 var bufferSize;
 
 var svgElement = document.getElementById("svgElement");
@@ -10,7 +10,7 @@ var path = null;
 var strPath;
 var buffer = []; // Contains the last positions of the mouse cursor
 
-svgElement.addEventListener("mousedown", function (e) {
+const startDrawing = (e) => {
 	bufferSize = 8;
 	path = document.createElementNS("http://www.w3.org/2000/svg", "path");
 	path.setAttribute("fill", "none");
@@ -22,26 +22,20 @@ svgElement.addEventListener("mousedown", function (e) {
 	strPath = "M" + pt.x + " " + pt.y;
 	path.setAttribute("d", strPath);
 	svgElement.appendChild(path);
-});
+};
 
-svgElement.addEventListener("mousemove", function (e) {
+const draw = (e) => {
 	if (path) {
 		appendToBuffer(getMousePosition(e));
 		updateSvgPath();
 	}
-});
+};
 
-svgElement.addEventListener("mouseup", function () {
+const stopDrawing = () => {
 	if (path) {
 		path = null;
 	}
-});
-
-svgElement.addEventListener("mouseleave", function () {
-	if (path) {
-		path = null;
-	}
-});
+};
 
 var getMousePosition = function (e) {
 	return {
@@ -98,3 +92,14 @@ var updateSvgPath = function () {
 		path.setAttribute("d", strPath + tmpPath);
 	}
 };
+
+svgElement.addEventListener("mousedown", (e) => startDrawing(e));
+svgElement.addEventListener("touchstart", (e) => startDrawing(e));
+
+svgElement.addEventListener("mousemove", (e) => draw(e));
+svgElement.addEventListener("touchmove", (e) => draw(e));
+
+svgElement.addEventListener("mouseup", () => stopDrawing());
+svgElement.addEventListener("mouseleave", () => stopDrawing());
+svgElement.addEventListener("touchend", () => stopDrawing());
+svgElement.addEventListener("touchcancel", () => stopDrawing());
