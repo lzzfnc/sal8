@@ -25,9 +25,9 @@
 				enable-background="new 0 0 500 500"
 				xml:space="preserve"
 			></svg>
+			<button id="submit">Send</button>
 		</div>
 
-		<button id="submit">Send</button>
 		<script>
 			const theme = document.querySelector("#theme");
 
@@ -51,6 +51,7 @@
 					},
 					""
 				);
+				if (paths == "") return;
 				socket.send(JSON.stringify({ type: "drawings", paths: paths }));
 
 				for (const path of document.querySelectorAll("#svgElement path")) {
