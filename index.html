@@ -25,11 +25,20 @@
 				enable-background="new 0 0 500 500"
 				xml:space="preserve"
 			></svg>
-			<button id="submit">Send</button>
+			<button id="submit">Spiedisci</button>
+			<button id="erase">Cancella</button>
 		</div>
 
 		<script>
 			const theme = document.querySelector("#theme");
+			const erase = document.querySelector("#erase");
+			const deletePath = () => {
+				for (const path of document.querySelectorAll("#svgElement path")) {
+					path.remove();
+				}
+			};
+
+			erase.addEventListener("click", () => deletePath());
 
 			const socket = new ReconnectingWebSocket(location.origin.replace(/^http/, "ws"));
 
@@ -53,10 +62,7 @@
 				);
 				if (paths == "") return;
 				socket.send(JSON.stringify({ type: "drawings", paths: paths }));
-
-				for (const path of document.querySelectorAll("#svgElement path")) {
-					path.remove();
-				}
+				deletePath();
 			});
 		</script>
 	</body>
